@@ -2,6 +2,26 @@
 
 /*Part 1: Declaring variables and constants.*/
 
+struct panel_player
+{
+ int size,color;
+ SDL_Rect rect;
+};
+
+
+struct panel_player player;
+
+void player_init()
+{
+ /*set up the values of the player*/
+ player.color=SDL_MapRGB(surface->format,255,255,0);
+ player.size=16;
+ player.rect.x=1*player.size;
+ player.rect.y=1*player.size;
+ player.rect.w=player.size;
+ player.rect.h=player.size;
+}
+
 #define tetris_array_size 0x1000
 
 /*main block structure*/
