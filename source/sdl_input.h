@@ -23,10 +23,12 @@ void keyboard()
     case SDLK_z:
      move_id='Z';
      /*block_rotate_left_basic();*/
+     flip();
     break;
     case SDLK_x:
      move_id='X';
      /*block_rotate_right_basic();*/
+     more();
     break;
 
     /*the main 4 directions*/

@@ -110,3 +110,43 @@ void left()
 }
 
 
+void flip()
+{
+ int temp;
+ int x=player.x,y=player.y;
+ temp=main_grid.array[x+y*grid_width];
+ main_grid.array[x+y*grid_width]=main_grid.array[x+1+y*grid_width];
+ main_grid.array[x+1+y*grid_width]=temp;
+}
+
+
+int colors[]={0xFF0000,0xFFFF00,0x00FF00,0x00FFFF,0x0000FF,0xFF00FF};
+int color_index=0;
+
+void more()
+{
+
+ int x,y;
+ y=0;
+ while(y<grid_height-1)
+ {
+  x=0;
+  while(x<grid_width)
+  {
+   main_grid.array[x+y*grid_width]=main_grid.array[x+(y+1)*grid_width];
+   x+=1;
+  }
+  y+=1;
+ }
+ 
+  x=0;
+  while(x<grid_width)
+  {
+   main_grid.array[x+y*grid_width]=colors[color_index];
+   color_index=(color_index+1)%6;
+   x+=1;
+  }
+ 
+ 
+}
+

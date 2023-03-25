@@ -104,7 +104,6 @@ void sdl_chaste_panel()
  int x=0,y=0,i;
  int wall_color;
 
- int colors[]={0xFF0000,0xFFFF00,0x00FF00,0x00FFFF,0x0000FF,0xFF00FF};
 
 
 
@@ -134,7 +133,7 @@ void sdl_chaste_panel()
  
  /*attempt to setup initial blocks*/
 
- i=0;
+ color_index=0;
  
  y=10;
  while(y<grid_height)
@@ -142,8 +141,8 @@ void sdl_chaste_panel()
   x=0;
   while(x<grid_width)
   {
-   main_grid.array[x+y*grid_width]=colors[i];
-   i=(i+1)%6;
+   main_grid.array[x+y*grid_width]=colors[color_index];
+   color_index=(color_index+1)%6;
    x++;
   }
   y++;
@@ -232,8 +231,8 @@ SDL_FillRect(surface,&rect,rect_color);
  rect.w=block_size;
  rect.h=block_size;
 
+/*second drawing with smaller squares for visibility*/
  i=4;
- 
  SDL_RenderDrawRect(renderer,&rect);
  rect.x+=block_size;
  SDL_RenderDrawRect(renderer,&rect);
