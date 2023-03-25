@@ -140,7 +140,7 @@ int vmatch()
 
       /*then go downwards and find matches*/
       y1=y;
-      while(y1<grid_height)
+      while(y1<=grid_height)
       {
        c1=main_grid.array[x+y1*grid_width];
        if(c1==c)
