@@ -264,21 +264,25 @@ void flip()
  main_grid.array[x+y*grid_width]=main_grid.array[x+1+y*grid_width];
  main_grid.array[x+1+y*grid_width]=temp;
  
+ if( main_grid.array[x+y*grid_width]==0  ||  main_grid.array[x+1+y*grid_width]==0 )
+ {
+  show_grid();
+  panel_fall();
+  custom_delay();
+ }
+ 
+ /*test vertical matches*/
  while(vmatch())
  {
- 
   show_grid();
- 
   x=panel_fall();
 /*  printf("x==%d\n",x);*/
-
   if(x!=0)
   {
    custom_delay();
   }
-
  }
- 
+
 }
 
 int colors[]={0xFF0000,0xFFFF00,0x00FF00,0x00FFFF,0x0000FF,0xFF00FF};
