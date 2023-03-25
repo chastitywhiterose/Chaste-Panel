@@ -64,21 +64,7 @@ int main(int argc, char **argv)
  SDL_FillRect(surface,NULL,SDL_MapRGB(surface->format,0x80,0x80,0x80));
  SDL_UpdateWindowSurface(window);
 
- sprintf(filename,"imovelog.txt");
- fp_input=fopen(filename,"rb+");
- if(fp_input==NULL)
- {
-  printf("Failed to open input file \"%s\".\n",filename);
-  printf("This is not an error. It just means input is keyboard only. \"%s\".\n",filename);
- }
- else
- {
-  printf("input file \"%s\" is opened.\n",filename);
-  printf("Will read commands from this file before keyboard. \"%s\".\n",filename);
- }
-
- sprintf(gamename,"Chaste Tris");
-
+ 
  font_8=chaste_font_load("./font/FreeBASIC Font 8.bmp");
 
  main_font=font_8;
@@ -86,32 +72,8 @@ int main(int argc, char **argv)
 
  /*welcome_screen_chaste_font();*/
 
-
-
  sdl_chaste_panel();
- 
-  /*
-  After the game ends, we will attempt to save the movelog to a file.
-  Keeping the movelog in memory and only writing at the end speeds up the program and simplifies things.
- */
- 
-  /*open the file to record moves*/
   
-/*
- sprintf(filename,"omovelog.txt");
- fp=fopen(filename,"wb+");
- if(fp==NULL){printf("Failed to create file \"%s\".\n",filename);}
- else
- {
-  x=0;
-  while(x<moves)
-  {
-   fputc(move_log[x],fp);
-   x++;
-  }
- }
- */
-
  if(fp!=NULL){fclose(fp);}
  if(fp_input!=NULL){fclose(fp_input);}
 

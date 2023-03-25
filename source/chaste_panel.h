@@ -110,6 +110,75 @@ void left()
 }
 
 
+
+
+int panel_match_count=0,match;
+
+/*vertical matches*/
+int vmatch()
+{
+ int x,y,y1;
+ int c,c1; /*colors testing*/
+ panel_match_count=0;
+ match=0;
+ 
+  x=0;
+  while(x<grid_width)
+  {
+   y=0;
+   while(y<grid_height)
+   {
+    
+     /*
+      get the color at this index
+      if it is not empty, count the matches
+     */
+     c=main_grid.array[x+y*grid_width];
+     if(c!=empty_color)
+     {
+      match=0;
+
+      /*then go downwards and find matches*/
+      y1=y;
+      while(y1<grid_height)
+      {
+       c1=main_grid.array[x+y1*grid_width];
+       if(c1==c)
+       {
+        match++;
+        
+       }
+       else
+       {
+       
+        /*if found 3 or more matches*/
+        if(match>=3)
+        {
+         printf("match %d\n",match);
+         while(y<y1)
+         {
+          main_grid.array[x+y*grid_width]=empty_color;
+          y++;
+         }
+        }
+       
+        match=0;
+        y1=grid_height;
+       }
+       y1++;
+      }
+     
+     }
+    
+    y++;
+   }
+   
+   x+=1;
+  }
+ 
+ return panel_match_count;
+}
+
 void flip()
 {
  int temp;
@@ -117,8 +186,9 @@ void flip()
  temp=main_grid.array[x+y*grid_width];
  main_grid.array[x+y*grid_width]=main_grid.array[x+1+y*grid_width];
  main_grid.array[x+1+y*grid_width]=temp;
+ 
+ vmatch();
 }
-
 
 int colors[]={0xFF0000,0xFFFF00,0x00FF00,0x00FFFF,0x0000FF,0xFF00FF};
 int color_index=0;
