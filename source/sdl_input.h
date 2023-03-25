@@ -33,22 +33,22 @@ void keyboard()
     case SDLK_UP:
     case SDLK_w:
      move_id='W';
-     tetris_move_up();
+     up();
     break;
     case SDLK_DOWN:
     case SDLK_s:
      move_id='S';
-     tetris_move_down();
+     down();
     break;
     case SDLK_LEFT:
     case SDLK_a:
      move_id='A';
-    tetris_move_left();
+     left();
     break;
     case SDLK_RIGHT:
     case SDLK_d:
      move_id='D';
-     tetris_move_right();
+     right();
     break;
 
    }

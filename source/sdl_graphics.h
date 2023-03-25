@@ -57,14 +57,6 @@ sprintf(text,"Chaste\n Panel");
   sprintf(text,"Score %d",score);
   chaste_font_draw_string_scaled(text,text_x,main_font.char_height*6*scale,scale);
 
-  sprintf(text,"Lines %d",lines_cleared_total);
-  chaste_font_draw_string_scaled(text,text_x,main_font.char_height*7*scale,scale);
-
-  sprintf(text,"This %c",main_block.id);
-  chaste_font_draw_string_scaled(text,text_x,main_font.char_height*8*scale,scale);
-
-
-  
   time(&time1);
   
   seconds=time1-time0; /*subtract current time from start time to get seconds since game started*/
@@ -103,31 +95,17 @@ int block_size;
 int border_size;
 int grid_offset_x;
 
-
-/*
-sets up the variables before the game loop so that the Tetris field is in the center.
-This is done because I updated the game later on. This corrects everything before the same loop starts.
-*/
-void screen_setup_centered()
-{
- grid_offset_x=(width-(20/2*block_size))/2; /*to center of screen*/
- border_size=12;
- stats_func=draw_stats_chaste_font_centered;  /*if centered, alternate stats function is needed*/
-
-}
-
-
-
-
-
 /*
 this is a function which is called by main after window is created. It is the game loop.
 */
-void sdl_chastetris()
+void sdl_chaste_panel()
 {
  int pixel,r,g,b;
- int x=0,y=0;
+ int x=0,y=0,i;
  int wall_color;
+
+ int colors[]={0xFF0000,0xFFFF00,0x00FF00,0x00FFFF,0x0000FF,0xFF00FF};
+
 
 
  block_size=height/grid_height;
@@ -137,26 +115,39 @@ void sdl_chastetris()
  
  wall_color=SDL_MapRGB(surface->format,127,127,127); /*color the walls of the grid will be*/
  
- /*if the following function is called, screen is centered. Otherwise use old style.*/
- screen_setup_centered();
+ /*setup the grid offset and border*/
 
+ grid_offset_x=(width-(20/2*block_size))/2; /*to center of screen*/
+ border_size=12;
 
- spawn_block();
+ /*spawn_block();*/
+ 
+ player_init();
+ 
+ 
+ player.rect.x=4*player.size;
+ player.rect.y=4*player.size;
 
 
  /*first empty the grid*/
- y=0;
+ grid_clear();
+ 
+ /*attempt to setup initial blocks*/
+
+ i=0;
+ 
+ y=10;
  while(y<grid_height)
  {
   x=0;
   while(x<grid_width)
   {
-   main_grid.array[x+y*grid_width]=empty_color;
-   x+=1;
+   main_grid.array[x+y*grid_width]=colors[i];
+   i=(i+1)%6;
+   x++;
   }
-  y+=1;
+  y++;
  }
-
 
  delay=1000/fps;
  
@@ -172,38 +163,6 @@ void sdl_chastetris()
 
   SDL_FillRect(surface,NULL,SDL_MapRGB(surface->format,0,0,0));
 
- /*make backup of entire grid*/
-  temp_grid=main_grid;
-
-  /*draw block onto temp grid at it's current location*/
-  y=0;
-  while(y<max_block_width)
-  {
-   x=0;
-   while(x<max_block_width)
-   {
-    if(main_block.array[x+y*max_block_width]!=0)
-    {
-     if( temp_grid.array[main_block.x+x+(main_block.y+y)*grid_width]!=0 )
-     {
-      printf("Error: Block in Way\n");
-
-      /*because a collision has occurred. We will restore everything back to the way it was before block was moved.*/
-
-      break;
-     }
-     else
-     {
-      temp_grid.array[main_block.x+x+(main_block.y+y)*grid_width]=main_block.color;
-     }
-    }
-    x+=1;
-   }
-   y+=1;
-  }
-
-
-
 /*display the tetris grid*/
 
  y=0;
@@ -212,7 +171,7 @@ void sdl_chastetris()
   x=0;
   while(x<grid_width)
   {
-   pixel=temp_grid.array[x+y*grid_width];
+   pixel=main_grid.array[x+y*grid_width];
    r=(pixel&0xFF0000)>>16;
    g=(pixel&0x00FF00)>>8;
    b=(pixel&0x0000FF);
@@ -230,6 +189,9 @@ rect.y=y*block_size;
 rect.w=block_size;
 rect.h=block_size;
 SDL_FillRect(surface,&rect,rect_color);
+
+
+
 
 
    x+=1;
@@ -261,6 +223,36 @@ SDL_FillRect(surface,&rect,rect_color);
  stats_func();
 
  keyboard();
+ 
+ SDL_SetRenderDrawColor(renderer,255,255,255,255);
+
+/*first draw of player selection*/
+ rect.x=grid_offset_x+player.x*block_size;
+ rect.y=player.y*block_size;
+ rect.w=block_size;
+ rect.h=block_size;
+
+ i=4;
+ 
+ SDL_RenderDrawRect(renderer,&rect);
+ rect.x+=block_size;
+ SDL_RenderDrawRect(renderer,&rect);
+
+ rect.x=grid_offset_x+player.x*block_size;
+ rect.y=player.y*block_size;
+ rect.w=block_size;
+ rect.h=block_size;
+ 
+ rect.x+=i;
+ rect.y+=i;
+ rect.w-=i*2;
+ rect.h-=i*2;
+
+ SDL_SetRenderDrawColor(renderer,0,0,0,255);
+ SDL_RenderDrawRect(renderer,&rect);
+ rect.x+=block_size;
+ SDL_RenderDrawRect(renderer,&rect);
+ 
 
  SDL_UpdateWindowSurface(window); /*update the screen*/
 
@@ -278,6 +270,8 @@ SDL_FillRect(surface,&rect,rect_color);
 
 
 
-
+/*
+https://wiki.libsdl.org/SDL2/SDL_RenderDrawRect
+*/
 
 

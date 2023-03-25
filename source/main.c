@@ -46,19 +46,6 @@ int main(int argc, char **argv)
  while(x<argc)
  {
   printf("argv[%i]=%s\n",x,argv[x]);
-
-  if(strcmp(argv[x],"-longboi")==0)
-  {
-   printf("Long Boi mode activated! Only the I blocks will spawn!\n");
-   blocks_used=1;
-  }
-  
-  if(strcmp(argv[x],"-tgirl")==0)
-  {
-   printf("T Girl mode activated! Only the T blocks will spawn!\n");
-   block_type=1;
-   blocks_used=1;
-  }
  
   x++;
  }
@@ -101,7 +88,7 @@ int main(int argc, char **argv)
 
 
 
- sdl_chastetris();
+ sdl_chaste_panel();
  
   /*
   After the game ends, we will attempt to save the movelog to a file.
