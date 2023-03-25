@@ -95,14 +95,75 @@ int block_size;
 int border_size;
 int grid_offset_x;
 
+
+int wall_color=0x808080;
+
+/*display the tetris grid*/
+void show_grid()
+{
+ int x,y;
+ int pixel,r,g,b;
+
+ y=0;
+ while(y<grid_height)
+ {
+  x=0;
+  while(x<grid_width)
+  {
+   pixel=main_grid.array[x+y*grid_width];
+   r=(pixel&0xFF0000)>>16;
+   g=(pixel&0x00FF00)>>8;
+   b=(pixel&0x0000FF);
+
+/*
+ printf("x=%d y=%d ",x,y);
+ printf("red=%d green=%d blue=%d\n",r,g,b);
+*/
+
+rect_color=SDL_MapRGB(surface->format,r,g,b);
+
+/*set up the rectangle structure with the needed data to square the squares*/
+   rect.x=grid_offset_x+x*block_size;
+   rect.y=y*block_size;
+   rect.w=block_size;
+   rect.h=block_size;
+   SDL_FillRect(surface,&rect,rect_color);
+
+   x+=1;
+  }
+  y+=1;
+ }
+ 
+ 
+  /*draw the boundary walls*/
+
+/*
+ set up the rectangle structure with the needed data to square the walls
+*/
+ rect.x=grid_offset_x-border_size;
+ rect.y=0*block_size;
+ rect.w=border_size;
+ rect.h=height;
+
+ SDL_FillRect(surface,&rect,wall_color);
+
+ rect.x=grid_offset_x+grid_width*block_size;
+ SDL_FillRect(surface,&rect,wall_color);
+ /*end of drawing code for walls*/
+ 
+ stats_func();
+
+ SDL_UpdateWindowSurface(window);
+}
+
 /*
 this is a function which is called by main after window is created. It is the game loop.
 */
 void sdl_chaste_panel()
 {
- int pixel,r,g,b;
+
  int x=0,y=0,i;
- int wall_color;
+ 
 
 
 
@@ -110,9 +171,7 @@ void sdl_chaste_panel()
  block_size=height/grid_height;
  grid_offset_x=block_size*1; /*how far from the left size of the window the grid display is*/
 
- printf("block_size==%d\n",block_size);
- 
- wall_color=SDL_MapRGB(surface->format,127,127,127); /*color the walls of the grid will be*/
+ /*printf("block_size==%d\n",block_size);*/
  
  /*setup the grid offset and border*/
 
@@ -162,64 +221,14 @@ void sdl_chaste_panel()
 
   SDL_FillRect(surface,NULL,SDL_MapRGB(surface->format,0,0,0));
 
-/*display the tetris grid*/
 
- y=0;
- while(y<grid_height)
- {
-  x=0;
-  while(x<grid_width)
-  {
-   pixel=main_grid.array[x+y*grid_width];
-   r=(pixel&0xFF0000)>>16;
-   g=(pixel&0x00FF00)>>8;
-   b=(pixel&0x0000FF);
-
-/*
- printf("x=%d y=%d ",x,y);
- printf("red=%d green=%d blue=%d\n",r,g,b);
-*/
-
-rect_color=SDL_MapRGB(surface->format,r,g,b);
-
-/*set up the rectangle structure with the needed data to square the squares*/
-rect.x=grid_offset_x+x*block_size;
-rect.y=y*block_size;
-rect.w=block_size;
-rect.h=block_size;
-SDL_FillRect(surface,&rect,rect_color);
+ show_grid();
 
 
 
 
 
-   x+=1;
-  }
-  y+=1;
- }
 
-
-
-
- /*draw the boundary walls*/
-
-/*
- set up the rectangle structure with the needed data to square the walls
-*/
- rect.x=grid_offset_x-border_size;
- rect.y=0*block_size;
- rect.w=border_size;
- rect.h=height;
-
- SDL_FillRect(surface,&rect,wall_color);
-
- rect.x=grid_offset_x+grid_width*block_size;
- SDL_FillRect(surface,&rect,wall_color);
-
-
- /*end of drawing code for grid*/
-
- stats_func();
 
  keyboard();
  

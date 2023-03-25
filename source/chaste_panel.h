@@ -114,7 +114,7 @@ void left()
 
 int panel_match_count=0,match;
 
-/*vertical matches*/
+/*start of vertical matching function*/
 int vmatch()
 {
  int x,y,y1;
@@ -154,7 +154,8 @@ int vmatch()
         /*if found 3 or more matches*/
         if(match>=3)
         {
-         printf("match %d\n",match);
+         panel_match_count+=match;
+         /*printf("match %d\n",match);*/
          while(y<y1)
          {
           main_grid.array[x+y*grid_width]=empty_color;
@@ -162,6 +163,7 @@ int vmatch()
          }
         }
        
+        
         match=0;
         y1=grid_height;
        }
@@ -178,7 +180,82 @@ int vmatch()
  
  return panel_match_count;
 }
+/*end of vertical matching function*/
 
+
+
+
+
+int panel_fall_count;
+
+int panel_fall()
+{
+ int x,y,xcount,y1;
+
+/* printf("Time to make lines fall\n");*/
+
+panel_fall_count=0;
+
+ y=grid_height;
+ while(y>0)
+ {
+  y-=1;
+
+  xcount=0;
+  x=0;
+  while(x<grid_width)
+  {
+   if(main_grid.array[x+y*grid_width]==empty_color)
+   {
+   
+   
+   y1=y;
+   while(y1>0)
+   {
+    y1--;
+    
+    if(main_grid.array[x+y1*grid_width]!=empty_color)
+    {
+     main_grid.array[x+y*grid_width]=main_grid.array[x+y1*grid_width]; /*copy from space above*/
+     main_grid.array[x+y1*grid_width]=empty_color; /*make space above empty now that is has been moved*/
+     
+     panel_fall_count++;
+     break;
+    }
+    
+   }
+    
+    xcount++;
+   }
+   
+   x+=1;
+  }
+
+
+
+ }
+
+ return panel_fall_count;
+}
+
+
+void custom_delay()
+{
+ int t0,t1,d;
+
+ d=1000;
+ t0=SDL_GetTicks();
+ t1=t0+d;
+
+ while(t0<t1)
+ {
+  t0=SDL_GetTicks();
+ }
+
+}
+
+
+/*flip the two panels at cursor and then try to check matches*/
 void flip()
 {
  int temp;
@@ -187,7 +264,21 @@ void flip()
  main_grid.array[x+y*grid_width]=main_grid.array[x+1+y*grid_width];
  main_grid.array[x+1+y*grid_width]=temp;
  
- vmatch();
+ while(vmatch())
+ {
+ 
+  show_grid();
+ 
+  x=panel_fall();
+/*  printf("x==%d\n",x);*/
+
+  if(x!=0)
+  {
+   custom_delay();
+  }
+
+ }
+ 
 }
 
 int colors[]={0xFF0000,0xFFFF00,0x00FF00,0x00FFFF,0x0000FF,0xFF00FF};

@@ -33,6 +33,9 @@ FILE *fp; /*to save a file of moves played*/
 char filename[256]; /*name of move log file*/
 FILE *fp_input; /*file to get input from instead of the keyboard*/
 
+/*declare show_grid here so it is visible to chaste_panel.h*/
+void show_grid();
+
 #include "chaste_panel.h"
 #include "sdl_chastefont.h"
 #include "sdl_input.h"
