@@ -206,6 +206,11 @@ void sdl_chaste_panel()
   }
   y++;
  }
+ 
+ 
+ main_grid.array[3+15*grid_width]=colors[0];
+ main_grid.array[6+15*grid_width]=colors[0];
+
 
  delay=1000/fps;
  

@@ -162,8 +162,7 @@ int vmatch()
           y++;
          }
         }
-       
-        
+         
         match=0;
         y1=grid_height;
        }
@@ -181,6 +180,79 @@ int vmatch()
  return panel_match_count;
 }
 /*end of vertical matching function*/
+
+
+
+
+
+
+/*start of horizontal matching function*/
+int hmatch()
+{
+ int x,y,x1;
+ int c,c1; /*colors testing*/
+ panel_match_count=0;
+ match=0;
+ 
+  y=0;
+  while(y<grid_height)
+  {
+    printf("checking row y=%d\n",y);
+   x=0;
+   while(x<grid_width)
+   {
+    printf("checking column x=%d\n",x);
+     /*
+      get the color at this index
+      if it is not empty, count the matches
+     */
+     c=main_grid.array[x+y*grid_width];
+     if(c!=empty_color)
+     {
+      match=1;
+
+      /*then go rightwards and find matches*/
+      x1=x+1;
+      while(x1<grid_width)
+      {
+       c1=main_grid.array[x1+y*grid_width];
+       if(c1==c)
+       {
+        match++;
+        printf("matches so far %d\n",match);
+       }
+       else
+       {
+        printf("matches found before non match %d\n",match);
+        /*if found 3 or more matches*/
+        if(match>=3)
+        {
+         panel_match_count+=match;
+         /*printf("match %d\n",match);*/
+         while(x<x1)
+         {
+          main_grid.array[x1+y*grid_width]=empty_color;
+          x++;
+         }
+        }
+         
+        match=0;
+        x1=grid_width;
+       }
+       x1++;
+      }
+     
+     }
+    
+    x++;
+   }
+   
+   y++;
+  }
+ 
+ return panel_match_count;
+}
+/*end of horizontal matching function*/
 
 
 
@@ -264,23 +336,52 @@ void flip()
  main_grid.array[x+y*grid_width]=main_grid.array[x+1+y*grid_width];
  main_grid.array[x+1+y*grid_width]=temp;
  
+ /*if either of the spaces swapped is empty, test for potential fall*/
  if( main_grid.array[x+y*grid_width]==0  ||  main_grid.array[x+1+y*grid_width]==0 )
  {
   show_grid();
-  panel_fall();
-  custom_delay();
- }
- 
- /*test vertical matches*/
- while(vmatch())
- {
-  show_grid();
   x=panel_fall();
-/*  printf("x==%d\n",x);*/
   if(x!=0)
   {
    custom_delay();
   }
+ }
+ 
+ /*loop that keeps going as long as there are any matches*/
+ temp=1;
+ while(temp)
+ {
+  temp=0;
+  
+  /*test vertical matches*/
+  x=vmatch();
+  temp+=x;
+  if(x!=0)
+  {
+   show_grid();
+   x=panel_fall();
+   /*printf("x==%d\n",x);*/
+   if(x!=0)
+   {
+    custom_delay();
+   }
+  }
+  
+  /*test horizontal matches*/
+  x=hmatch();
+  temp+=x;
+  if(x!=0)
+  {
+   show_grid();
+   x=panel_fall();
+   /*printf("x==%d\n",x);*/
+   if(x!=0)
+   {
+    custom_delay();
+   }
+  }
+  
+
  }
 
 }

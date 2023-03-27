@@ -1,8 +1,6 @@
 /*sdl_input.h*/
 
-int log_loop_begin=0; /*special secret variable I am experimenting with*/
-
-/*this function is an SDL port of the keyboard function from the Raylib version of Chaste Tris*/
+/*this function controls all keyboard input*/
 void keyboard()
 {
  int key;
