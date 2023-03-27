@@ -371,6 +371,8 @@ void flip()
    }
   }
   
+  
+  
   /*test horizontal matches*/
   x=hmatch();
   temp+=x;
@@ -384,8 +386,8 @@ void flip()
    {
     custom_delay();
    }
+   
   }
-  
 
  }
 
