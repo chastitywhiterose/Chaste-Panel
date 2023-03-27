@@ -56,6 +56,9 @@ sprintf(text,"Chaste\n Panel");
 
   sprintf(text,"Score %d",score);
   chaste_font_draw_string_scaled(text,text_x,main_font.char_height*6*scale,scale);
+  
+   sprintf(text,"Combo %d",combo);
+  chaste_font_draw_string_scaled(text,text_x,main_font.char_height*7*scale,scale);
 
   time(&time1);
   

@@ -59,6 +59,7 @@ int last_move_spin=0; /*was the last move a t spin?*/
 int last_move_fail; /*did the last move fail?*/
 int back_to_back=0;
 int score=0;
+int combo=0;
 
 char move_log[0x1000000]; /*large array to store moves*/
 
@@ -197,11 +198,11 @@ int hmatch()
   y=0;
   while(y<grid_height)
   {
-    printf("checking row y=%d\n",y);
+    /*printf("checking row y=%d\n",y);*/
    x=0;
    while(x<grid_width)
    {
-    printf("checking column x=%d\n",x);
+    /*printf("checking column x=%d\n",x);*/
      /*
       get the color at this index
       if it is not empty, count the matches
@@ -209,21 +210,21 @@ int hmatch()
      c=main_grid.array[x+y*grid_width];
      if(c!=empty_color)
      {
-      match=1;
+      match=0;
 
       /*then go rightwards and find matches*/
-      x1=x+1;
+      x1=x;
       while(x1<grid_width)
       {
        c1=main_grid.array[x1+y*grid_width];
        if(c1==c)
        {
         match++;
-        printf("matches so far %d\n",match);
+        /*printf("matches so far %d\n",match);*/
        }
        else
        {
-        printf("matches found before non match %d\n",match);
+        /*printf("matches found before non match %d\n",match);*/
         /*if found 3 or more matches*/
         if(match>=3)
         {
@@ -231,7 +232,7 @@ int hmatch()
          /*printf("match %d\n",match);*/
          while(x<x1)
          {
-          main_grid.array[x1+y*grid_width]=empty_color;
+          main_grid.array[x+y*grid_width]=empty_color;
           x++;
          }
         }
@@ -347,6 +348,8 @@ void flip()
   }
  }
  
+ combo=0;
+ 
  /*loop that keeps going as long as there are any matches*/
  temp=1;
  while(temp)
@@ -358,6 +361,7 @@ void flip()
   temp+=x;
   if(x!=0)
   {
+   combo++;
    show_grid();
    x=panel_fall();
    /*printf("x==%d\n",x);*/
@@ -372,6 +376,7 @@ void flip()
   temp+=x;
   if(x!=0)
   {
+   combo++;
    show_grid();
    x=panel_fall();
    /*printf("x==%d\n",x);*/
