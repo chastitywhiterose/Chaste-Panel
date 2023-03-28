@@ -10,3 +10,16 @@ ReMix:Tetris Attack "Sound of the Dogfish"
 By halc
 
 https://ocremix.org/remix/OCR01780
+
+
+ReMix:Final Fantasy VII "Cosmo"
+By MkVaff
+
+https://ocremix.org/remix/OCR03750
+
+
+ReMix:The Legend of Zelda: A Link to the Past "The Darkness and the Light"
+By MkVaff
+
+https://ocremix.org/remix/OCR01185
+
