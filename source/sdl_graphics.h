@@ -14,7 +14,7 @@ void welcome_screen_chaste_font()
  text_x=main_font.char_height*1;
 
  sprintf(text,"Chaste \n Panel");
- chaste_font_draw_string_scaled(text,100,main_font.char_height*1,20);
+ chaste_font_draw_string_scaled(text,100,main_font.char_height*1*4,20);
 
 
  sprintf(text,"Press Enter to Begin game.");
@@ -210,10 +210,11 @@ void sdl_chaste_panel()
   y++;
  }
  
- 
+/* 
  main_grid.array[3+15*grid_width]=colors[0];
  main_grid.array[6+15*grid_width]=colors[0];
-
+ main_grid.array[6+14*grid_width]=colors[5];
+ */
 
  delay=1000/fps;
  
@@ -279,6 +280,12 @@ void sdl_chaste_panel()
  }
 
  frame++;
+
+  if(!Mix_Playing(0)) /*if music is no longer playing*/
+  {
+   song_index=(song_index+1)%songs; /*go to next song*/
+   chaste_audio_play(music[song_index]); /*start the music at the current song index*/
+  }
 
  }
 

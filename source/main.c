@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <SDL.h>
+#include <SDL_mixer.h>
 
 /*
 most variables in the program are global. Unless I create temporary variables in other functions.
@@ -36,6 +37,18 @@ FILE *fp_input; /*file to get input from instead of the keyboard*/
 /*declare show_grid here so it is visible to chaste_panel.h*/
 void show_grid();
 
+/*music variables section*/
+int songs=3,song_index=0,music_is_on=0;
+char *music_files[]=
+{
+ "music/Tetris_Attack_Sound_of_the_Dogfish_OC_ReMix.mp3",
+ "music/Final_Fantasy_7_Cosmo_OC_ReMix.mp3",
+ "music/Legend_of_Zelda_A_Link_to_the_Past_The_Darkness_and_the_Light_OC_ReMix.mp3"
+};
+
+Mix_Chunk *music[3]; /*chunks the music is loaded into*/
+
+#include "sdl_chaste_music.h"
 #include "chaste_panel.h"
 #include "sdl_chastefont.h"
 #include "sdl_input.h"
@@ -43,14 +56,16 @@ void show_grid();
 
 int main(int argc, char **argv)
 {
+ int i=0;
 
- /*process command line arguments*/
- int x=1;
- while(x<argc)
- {
-  printf("argv[%i]=%s\n",x,argv[x]);
+ chaste_audio_init(); /*get the audio device ready*/
  
-  x++;
+ /*load all songs*/
+ i=0;
+ while(i<songs)
+ {
+  music[i]=chaste_audio_load(music_files[i]);
+  i++;
  }
 
  if(SDL_Init(SDL_INIT_VIDEO)){printf( "SDL could not initialize! SDL_Error: %s\n",SDL_GetError());return -1;}
@@ -73,7 +88,10 @@ int main(int argc, char **argv)
  main_font=font_8;
 
 
- /*welcome_screen_chaste_font();*/
+ welcome_screen_chaste_font();
+ 
+ song_index=0;
+ chaste_audio_play(music[song_index]);
 
  sdl_chaste_panel();
   
@@ -82,6 +100,26 @@ int main(int argc, char **argv)
 
  SDL_DestroyRenderer(renderer);
  SDL_DestroyWindow(window);
+ 
+  /*unload and free the music*/
+ i=0;
+ while(i<songs)
+ {
+  if(music[i]!=NULL)
+  {
+   Mix_FreeChunk(music[i]);
+   music[i]=NULL;
+  }
+  i++;
+ }
+ 
+  if (audio_open)
+  {
+   Mix_CloseAudio();
+   audio_open = 0;
+  }
+  /*end of music closing section*/
+ 
  SDL_Quit();
 
  SDL_FreeSurface(font_8.surface);
