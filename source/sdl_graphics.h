@@ -9,12 +9,26 @@ this header file is meant to contain all the functions which write things to the
 /* this function is now the official welcome screen*/
 void welcome_screen_chaste_font()
 {
+
+ loop=1;
+ while(loop)
+ {
+
  SDL_FillRect(surface,NULL,SDL_MapRGB(surface->format,0,0,0));
 
  text_x=main_font.char_height*1;
 
  sprintf(text,"Chaste \n Panel");
  chaste_font_draw_string_scaled(text,100,main_font.char_height*1*4,20);
+
+ chaste_palette_index=chaste_palette_index1;
+ chaste_font_draw_string_scaled_special(text,100,main_font.char_height*1*4,20);
+
+ chaste_palette_index1++;
+ if(chaste_palette_index1>=chaste_palette_length)
+ {
+  chaste_palette_index1=0;
+ }
 
 
  sprintf(text,"Press Enter to Begin game.");
@@ -25,9 +39,7 @@ void welcome_screen_chaste_font()
 
  SDL_UpdateWindowSurface(window); /*update the screen*/
 
- loop=1;
- while(loop)
- {
+
   SDL_PollEvent( &e );
   if( e.type == SDL_QUIT ){loop=0;}
   if(e.type == SDL_KEYUP)
@@ -51,8 +63,18 @@ void welcome_screen_chaste_font()
  
   text_x=32;
 
-sprintf(text,"Chaste\n Panel");
- chaste_font_draw_string_scaled(text,text_x,main_font.char_height*1,8);
+
+ /*sprintf(text,"Chaste\n Panel");
+ chaste_font_draw_string_scaled(text,text_x,main_font.char_height*1,8);*/
+
+  chaste_palette_index=chaste_palette_index1;
+  chaste_font_draw_string_scaled_special("Chaste\n Panel",text_x,main_font.char_height*1,8);
+
+  chaste_palette_index1++;
+  if(chaste_palette_index1>=chaste_palette_length)
+  {
+   chaste_palette_index1=0;
+  }
 
   sprintf(text,"Score %d",score);
   chaste_font_draw_string_scaled(text,text_x,main_font.char_height*6*scale,scale);
@@ -78,10 +100,11 @@ sprintf(text,"Chaste\n Panel");
   
   minutes=seconds/60;
   seconds%=60;
+  hours=minutes/60;
+  minutes%=60;
   
-  sprintf(text,"Time %d:%02d",minutes,seconds);
+  sprintf(text,"Time %d:%02d:%02d",hours,minutes,seconds);
   chaste_font_draw_string_scaled(text,text_x,main_font.char_height*13*scale,scale);
-  
 
 
 

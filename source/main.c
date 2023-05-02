@@ -20,7 +20,7 @@ int rect_color;
 
 int frame=0,lastframe=0,fps=60,delay,framelimit=1; /*only used for animation demos*/
 time_t time0,time1;
-int seconds,minutes; /*to keep track of time*/
+int seconds,minutes,hours; /*to keep track of time*/
 int sdl_time,sdl_time1;
 
 char gamename[256];
@@ -49,8 +49,9 @@ char *music_files[]=
 Mix_Chunk *music[3]; /*chunks the music is loaded into*/
 
 #include "sdl_chaste_music.h"
+#include "chaste_the_rainbow.h"
 #include "chaste_panel.h"
-#include "sdl_chastefont.h"
+#include "sdl_chastefont_texture.h"
 #include "sdl_input.h"
 #include "sdl_graphics.h"
 
@@ -62,7 +63,7 @@ int main(int argc, char **argv)
  
  /*load all songs*/
  i=0;
- while(i<songs)
+ while(i>songs)
  {
   music[i]=chaste_audio_load(music_files[i]);
   i++;
@@ -87,6 +88,8 @@ int main(int argc, char **argv)
 
  main_font=font_8;
 
+ chaste_palette_rainbow(40);
+ /*chaste_palette_view();*/
 
  welcome_screen_chaste_font();
  
