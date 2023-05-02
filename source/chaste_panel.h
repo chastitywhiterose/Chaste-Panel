@@ -33,7 +33,7 @@ struct tetris_grid
  int array[tetris_array_size];
 };
 
-struct tetris_grid main_grid,temp_grid;
+struct tetris_grid main_grid,temp_grid,match_grid;
 
 int grid_width=10,grid_height=20;
 
@@ -159,7 +159,8 @@ int vmatch()
          /*printf("match %d\n",match);*/
          while(y<y1)
          {
-          main_grid.array[x+y*grid_width]=empty_color;
+          /*main_grid.array[x+y*grid_width]=empty_color;*/
+          match_grid.array[x+y*grid_width]=0xFFFFFF;
           y++;
          }
         }
@@ -232,7 +233,8 @@ int hmatch()
          /*printf("match %d\n",match);*/
          while(x<x1)
          {
-          main_grid.array[x+y*grid_width]=empty_color;
+          /*main_grid.array[x+y*grid_width]=empty_color;*/
+          match_grid.array[x+y*grid_width]=0xFFFFFF;
           x++;
          }
         }
@@ -347,11 +349,51 @@ void flip()
    custom_delay();
   }
  }
+
+
+
+/*
+now see if anything matches
+if so, copy the matches to a separate grid
+*/
+
+ /*first we clear the match grid to all black*/
+ y=0;
+ while(y<grid_height)
+ {
+  x=0;
+  while(x<grid_width)
+  {
+   match_grid.array[x+y*grid_width]=empty_color;
+   x+=1;
+  }
+  y+=1;
+ }
+
+/*then these functions detect horizontal and vertical matches*/
+vmatch();
+hmatch();
+
+ /*then copy all found matches back to the main grid*/
+ y=0;
+ while(y<grid_height)
+ {
+  x=0;
+  while(x<grid_width)
+  {
+   if(match_grid.array[x+y*grid_width]!=empty_color)
+   {
+    main_grid.array[x+y*grid_width]=0xFF8000;
+   }
+   x+=1;
+  }
+  y+=1;
+ }
  
  combo=0;
  
  /*loop that keeps going as long as there are any matches*/
- temp=1;
+ temp=0;
  while(temp)
  {
   temp=0;
@@ -374,6 +416,7 @@ void flip()
   
   
   /*test horizontal matches*/
+
   x=hmatch();
   temp+=x;
   if(x!=0)
