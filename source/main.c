@@ -63,7 +63,7 @@ int main(int argc, char **argv)
  
  /*load all songs*/
  i=0;
- while(i>songs)
+ while(i<songs)
  {
   music[i]=chaste_audio_load(music_files[i]);
   i++;

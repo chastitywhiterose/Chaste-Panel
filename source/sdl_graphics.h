@@ -209,10 +209,6 @@ void sdl_chaste_panel()
  player_init();
  
  
- player.rect.x=4*player.size;
- player.rect.y=4*player.size;
-
-
  /*first empty the grid*/
  grid_clear();
  
@@ -233,7 +229,7 @@ void sdl_chaste_panel()
   y++;
  }
  
- if(1)
+ if(0)
  {
   main_grid.array[6+13*grid_width]=colors[0];
   main_grid.array[6+14*grid_width]=colors[0];

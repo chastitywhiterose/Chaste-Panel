@@ -258,6 +258,60 @@ int hmatch()
 /*end of horizontal matching function*/
 
 
+/*
+
+this function uses both of the previously defined verical and horizonal matching functions
+
+*/
+int panel_match()
+{
+ int x,y,horizontal_matches,vertical_matches;
+
+/*
+now see if anything matches
+if so, copy the matches to a separate grid
+*/
+
+ /*first we clear the match grid to all black*/
+ y=0;
+ while(y<grid_height)
+ {
+  x=0;
+  while(x<grid_width)
+  {
+   match_grid.array[x+y*grid_width]=empty_color;
+   x+=1;
+  }
+  y+=1;
+ }
+
+/*then these functions detect horizontal and vertical matches*/
+horizontal_matches=hmatch();
+vertical_matches=vmatch();
+
+
+/*printf("horizontal_matches==%d\n",horizontal_matches);
+printf("vertical_matches==%d\n",vertical_matches);*/
+
+ /*then copy all found matches back to the main grid*/
+ y=0;
+ while(y<grid_height)
+ {
+  x=0;
+  while(x<grid_width)
+  {
+   if(match_grid.array[x+y*grid_width]!=empty_color)
+   {
+    main_grid.array[x+y*grid_width]=0x000000;
+   }
+   x+=1;
+  }
+  y+=1;
+ }
+
+ return horizontal_matches+vertical_matches;
+}
+
 
 
 
@@ -333,7 +387,7 @@ void custom_delay()
 /*flip the two panels at cursor and then try to check matches*/
 void flip()
 {
- int temp;
+ int temp,matches;
  int x=player.x,y=player.y;
  temp=main_grid.array[x+y*grid_width];
  main_grid.array[x+y*grid_width]=main_grid.array[x+1+y*grid_width];
@@ -352,86 +406,31 @@ void flip()
 
 
 
-/*
-now see if anything matches
-if so, copy the matches to a separate grid
-*/
-
- /*first we clear the match grid to all black*/
- y=0;
- while(y<grid_height)
- {
-  x=0;
-  while(x<grid_width)
-  {
-   match_grid.array[x+y*grid_width]=empty_color;
-   x+=1;
-  }
-  y+=1;
- }
-
-/*then these functions detect horizontal and vertical matches*/
-vmatch();
-hmatch();
-
- /*then copy all found matches back to the main grid*/
- y=0;
- while(y<grid_height)
- {
-  x=0;
-  while(x<grid_width)
-  {
-   if(match_grid.array[x+y*grid_width]!=empty_color)
-   {
-    main_grid.array[x+y*grid_width]=0xFF8000;
-   }
-   x+=1;
-  }
-  y+=1;
- }
- 
  combo=0;
  
  /*loop that keeps going as long as there are any matches*/
- temp=0;
- while(temp)
+ matches=1;
+ while(matches)
  {
-  temp=0;
-  
-  /*test vertical matches*/
-  x=vmatch();
-  temp+=x;
-  if(x!=0)
+  /*test horizontal and vertical matches*/
+  matches=panel_match();
+  /*printf("matches==%d\n",matches);*/
+  if(matches!=0)
   {
    combo++;
+   score+=100*matches*combo;
    show_grid();
+   custom_delay(); 
+
    x=panel_fall();
-   /*printf("x==%d\n",x);*/
+   /*printf("fall==%d\n",x);*/
    if(x!=0)
    {
+    show_grid();
     custom_delay();
    }
   }
   
-  
-  
-  /*test horizontal matches*/
-
-  x=hmatch();
-  temp+=x;
-  if(x!=0)
-  {
-   combo++;
-   show_grid();
-   x=panel_fall();
-   /*printf("x==%d\n",x);*/
-   if(x!=0)
-   {
-    custom_delay();
-   }
-   
-  }
-
  }
 
 }
