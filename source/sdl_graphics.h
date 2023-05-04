@@ -10,9 +10,13 @@ this header file is meant to contain all the functions which write things to the
 void welcome_screen_chaste_font()
 {
 
+ delay=1000/fps;
+
  loop=1;
  while(loop)
  {
+  sdl_time = SDL_GetTicks();
+  sdl_time1 = sdl_time+delay;
 
  SDL_FillRect(surface,NULL,SDL_MapRGB(surface->format,0,0,0));
 
@@ -46,6 +50,15 @@ void welcome_screen_chaste_font()
   {
    if(e.key.keysym.sym==SDLK_RETURN){loop=0;}
   }
+
+ /*delay*/
+ while(sdl_time<sdl_time1)
+ {
+  sdl_time=SDL_GetTicks();
+ }
+
+
+
  }
 
 }
