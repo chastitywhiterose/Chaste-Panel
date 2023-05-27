@@ -10,7 +10,7 @@ most variables in the program are global. Unless I create temporary variables in
 int width=1280,height=720;
 int loop=1;
 SDL_Window *window = NULL;
-SDL_Surface *surface;
+/*SDL_Surface *surface;*/
 SDL_Renderer *renderer; /*renderer used for some things*/
 SDL_Event e;
 SDL_Rect rect;
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
  
  /*load all songs*/
  i=0;
- while(i<songs)
+ while(i>songs)
  {
   music[i]=chaste_audio_load(music_files[i]);
   i++;
@@ -74,21 +74,17 @@ int main(int argc, char **argv)
  if(window==NULL){printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );return -1;}
 
  /*set up the screen*/
- surface = SDL_GetWindowSurface( window );
+ /*surface = SDL_GetWindowSurface( window );*/
  
   /*create a renderer that can draw to the surface*/
- renderer=SDL_CreateSoftwareRenderer(surface);
+ renderer = SDL_CreateRenderer(window,-1,0);
  if(renderer==NULL){printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError() );return -1;}
 
- SDL_FillRect(surface,NULL,SDL_MapRGB(surface->format,0x80,0x80,0x80));
- SDL_UpdateWindowSurface(window);
-
- 
  font_8=chaste_font_load("./font/FreeBASIC Font 8.bmp");
-
  main_font=font_8;
 
- chaste_palette_rainbow(40);
+ /*chaste_palette_rainbow(40);*/
+ chaste_palette_rainbow_pastel(80);
  /*chaste_palette_view();*/
 
  welcome_screen_chaste_font();

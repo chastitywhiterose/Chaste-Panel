@@ -18,7 +18,8 @@ void welcome_screen_chaste_font()
   sdl_time = SDL_GetTicks();
   sdl_time1 = sdl_time+delay;
 
- SDL_FillRect(surface,NULL,SDL_MapRGB(surface->format,0,0,0));
+ SDL_SetRenderDrawColor(renderer,0,0,0,255);
+ SDL_RenderClear(renderer);
 
  text_x=main_font.char_height*1;
 
@@ -41,7 +42,7 @@ void welcome_screen_chaste_font()
  sprintf(text,"All physics code in this game was written by Chastity White Rose using the C Programming Language.\nThe font handling is done with the font library Chastity wrote and named Chaste Font.\nSDL is used for the graphics API including rectangles and textures.\n\nThis game is based on Panel de Pon, also known as Tetris Attack.");
  chaste_font_draw_string(text,200,500);
 
- SDL_UpdateWindowSurface(window); /*update the screen*/
+ SDL_RenderPresent(renderer);
 
 
   SDL_PollEvent( &e );
@@ -159,14 +160,14 @@ void show_grid()
  printf("red=%d green=%d blue=%d\n",r,g,b);
 */
 
-rect_color=SDL_MapRGB(surface->format,r,g,b);
+ SDL_SetRenderDrawColor(renderer,r,g,b,255);
 
 /*set up the rectangle structure with the needed data to square the squares*/
    rect.x=grid_offset_x+x*block_size;
    rect.y=y*block_size;
    rect.w=block_size;
    rect.h=block_size;
-   SDL_FillRect(surface,&rect,rect_color);
+   SDL_RenderFillRect(renderer,&rect);
 
    x+=1;
   }
@@ -175,6 +176,7 @@ rect_color=SDL_MapRGB(surface->format,r,g,b);
  
  
   /*draw the boundary walls*/
+SDL_SetRenderDrawColor(renderer,128,128,128,255);
 
 /*
  set up the rectangle structure with the needed data to square the walls
@@ -184,15 +186,15 @@ rect_color=SDL_MapRGB(surface->format,r,g,b);
  rect.w=border_size;
  rect.h=height;
 
- SDL_FillRect(surface,&rect,wall_color);
+ SDL_RenderFillRect(renderer,&rect);
 
  rect.x=grid_offset_x+grid_width*block_size;
- SDL_FillRect(surface,&rect,wall_color);
+ SDL_RenderFillRect(renderer,&rect);
  /*end of drawing code for walls*/
  
  stats_func();
 
- SDL_UpdateWindowSurface(window);
+ SDL_RenderPresent(renderer);
 }
 
 /*
@@ -262,18 +264,22 @@ void sdl_chaste_panel()
   sdl_time = SDL_GetTicks();
   sdl_time1 = sdl_time+delay;
 
-  SDL_FillRect(surface,NULL,SDL_MapRGB(surface->format,0,0,0));
+  SDL_SetRenderDrawColor(renderer,0,0,0,255);
+  SDL_RenderClear(renderer);
 
 
- show_grid();
-
-
-
-
+  show_grid();
 
 
 
- keyboard();
+
+
+
+ /*test for events and only process if they exist*/
+ while(SDL_PollEvent(&e))
+ {
+  keyboard();
+ }
  
  SDL_SetRenderDrawColor(renderer,255,255,255,255);
 
@@ -305,8 +311,7 @@ void sdl_chaste_panel()
  SDL_RenderDrawRect(renderer,&rect);
  
 
- SDL_UpdateWindowSurface(window); /*update the screen*/
-
+ SDL_RenderPresent(renderer);
 
  while(sdl_time<sdl_time1)
  {

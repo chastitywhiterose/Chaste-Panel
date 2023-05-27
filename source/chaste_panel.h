@@ -15,7 +15,7 @@ struct panel_player player;
 void player_init()
 {
  /*set up the values of the player*/
- player.color=SDL_MapRGB(surface->format,255,255,0);
+ /*player.color=SDL_MapRGB(surface->format,255,255,0);*/
  player.size=36;
  player.rect.x=1*player.size;
  player.rect.y=1*player.size;
@@ -121,7 +121,7 @@ int vmatch()
  int x,y,y1;
  int c,c1; /*colors testing*/
  panel_match_count=0;
- match=0;
+ 
  
   x=0;
   while(x<grid_width)
@@ -129,49 +129,36 @@ int vmatch()
    y=0;
    while(y<grid_height)
    {
-    
-     /*
-      get the color at this index
-      if it is not empty, count the matches
-     */
-     c=main_grid.array[x+y*grid_width];
-     if(c!=empty_color)
-     {
-      match=0;
+    match=0;
 
-      /*then go downwards and find matches*/
-      y1=y;
-      while(y1<=grid_height)
-      {
-       c1=main_grid.array[x+y1*grid_width];
-       if(c1==c)
-       {
-        match++;
-        
-       }
-       else
-       {
-       
-        /*if found 3 or more matches*/
-        if(match>=3)
-        {
-         panel_match_count+=match;
-         /*printf("match %d\n",match);*/
-         while(y<y1)
-         {
-          /*main_grid.array[x+y*grid_width]=empty_color;*/
-          match_grid.array[x+y*grid_width]=0xFFFFFF;
-          y++;
-         }
-        }
-         
-        match=0;
-        y1=grid_height;
-       }
-       y1++;
-      }
-     
+    /*get the color at this index  if it is not empty, count the matches*/
+    c=main_grid.array[x+y*grid_width];
+    if(c!=empty_color)     
+    {
+
+     /*then go downwards and find matches*/
+     y1=y;
+     while(y1<grid_height)
+     {
+      c1=main_grid.array[x+y1*grid_width];
+      if(c1==c){match++;}
+      else{break;}
+      y1++;
      }
+
+     /*if found 3 or more matches*/
+     if(match>=3)
+     {
+      panel_match_count+=match;
+      printf("vertical match %d\n",match);
+      while(y<y1)
+      {
+       match_grid.array[x+y*grid_width]=0xFFFFFF;
+       y++;
+      }
+     }
+         
+    }
     
     y++;
    }
@@ -203,6 +190,7 @@ int hmatch()
    x=0;
    while(x<grid_width)
    {
+    match=0;
     /*printf("checking column x=%d\n",x);*/
      /*
       get the color at this index
@@ -211,39 +199,29 @@ int hmatch()
      c=main_grid.array[x+y*grid_width];
      if(c!=empty_color)
      {
-      match=0;
+
 
       /*then go rightwards and find matches*/
       x1=x;
       while(x1<grid_width)
       {
        c1=main_grid.array[x1+y*grid_width];
-       if(c1==c)
-       {
-        match++;
-        /*printf("matches so far %d\n",match);*/
-       }
-       else
-       {
-        /*printf("matches found before non match %d\n",match);*/
-        /*if found 3 or more matches*/
+       if(c1==c){match++;}
+       else{break;}
+       x1++;
+      }
+
         if(match>=3)
         {
          panel_match_count+=match;
-         /*printf("match %d\n",match);*/
+         printf("horizontal match %d\n",match);
          while(x<x1)
          {
-          /*main_grid.array[x+y*grid_width]=empty_color;*/
           match_grid.array[x+y*grid_width]=0xFFFFFF;
           x++;
          }
         }
          
-        match=0;
-        x1=grid_width;
-       }
-       x1++;
-      }
      
      }
     
