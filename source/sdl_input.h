@@ -19,12 +19,10 @@ void keyboard()
 
     case SDLK_z:
      move_id='Z';
-     /*block_rotate_left_basic();*/
      flip();
     break;
     case SDLK_x:
      move_id='X';
-     /*block_rotate_right_basic();*/
      more();
     break;
 
@@ -58,3 +56,49 @@ void keyboard()
 
 
 
+
+
+
+
+
+
+
+/*
+this function gets input from a previous log file and autoplays the moves from  it.
+This feature was first used in Chaste Tris and is great for making demo videos by playing back moves fast
+*/
+void next_file_input()
+{
+ int c;
+ if(fp_input==NULL){return;}
+
+ c=fgetc(fp_input);
+
+ if(feof(fp_input))
+ {
+  printf("End of file reached.\n");
+  printf("Now use keyboard input.\n");
+  /*
+   printf("Going back to beginning\n");
+   fseek(fp_input,0,SEEK_SET);
+  */
+
+  fclose(fp_input); fp_input=NULL;  return;
+ }
+
+ else
+ {
+  /*printf("Character==%c\n",c);*/
+
+  move_id=c;
+
+  if(c=='W'){up();}
+  if(c=='S'){down();}
+  if(c=='A'){left();}
+  if(c=='D'){right();}
+
+  if(c=='Z'){flip();}
+  if(c=='X'){more();}
+ 
+ }
+}

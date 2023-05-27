@@ -87,6 +87,11 @@ void down()
 {
  player.y+=1;
  if(player.y==grid_height){player.y-=1;}
+ else
+ {
+  move_log[moves]=move_id;
+  moves++;
+ }
 }
 
 /*all things about moving up*/
@@ -94,6 +99,11 @@ void up()
 {
  player.y-=1;
  if(player.y<0){player.y+=1;}
+ else
+ {
+  move_log[moves]=move_id;
+  moves++;
+ }
 }
 
 /*all things about moving right*/
@@ -101,6 +111,11 @@ void right()
 {
  player.x+=1;
  if(player.x==grid_width-1){player.x-=1;}
+ else
+ {
+  move_log[moves]=move_id;
+  moves++;
+ }
 }
 
 /*all things about moving left*/
@@ -108,6 +123,11 @@ void left()
 {
  player.x-=1;
  if(player.x<0){player.x+=1;}
+ else
+ {
+  move_log[moves]=move_id;
+  moves++;
+ }
 }
 
 
@@ -150,7 +170,7 @@ int vmatch()
      if(match>=3)
      {
       panel_match_count+=match;
-      printf("vertical match %d\n",match);
+      /*printf("vertical match %d\n",match);*/
       while(y<y1)
       {
        match_grid.array[x+y*grid_width]=0xFFFFFF;
@@ -214,7 +234,7 @@ int hmatch()
         if(match>=3)
         {
          panel_match_count+=match;
-         printf("horizontal match %d\n",match);
+         /*printf("horizontal match %d\n",match);*/
          while(x<x1)
          {
           match_grid.array[x+y*grid_width]=0xFFFFFF;
@@ -411,6 +431,8 @@ void flip()
   
  }
 
+ move_log[moves]=move_id;
+ moves++;
 }
 
 int colors[]={0xFF0000,0xFFFF00,0x00FF00,0x00FFFF,0x0000FF,0xFF00FF};
@@ -440,6 +462,7 @@ void more()
    x+=1;
   }
  
- 
+ move_log[moves]=move_id;
+ moves++;
 }
 

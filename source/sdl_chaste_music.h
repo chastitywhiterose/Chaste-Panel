@@ -18,7 +18,6 @@ int audio_rate;
 Uint16 audio_format;
 int audio_channels;
 int loops = 0;
-int i;
 int reverse_stereo = 0;
 int reverse_sample = 0;
 

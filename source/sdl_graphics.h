@@ -39,8 +39,8 @@ void welcome_screen_chaste_font()
  sprintf(text,"Press Enter to Begin game.");
  chaste_font_draw_string_scaled(text,200,400,4);
 
- sprintf(text,"All physics code in this game was written by Chastity White Rose using the C Programming Language.\nThe font handling is done with the font library Chastity wrote and named Chaste Font.\nSDL is used for the graphics API including rectangles and textures.\n\nThis game is based on Panel de Pon, also known as Tetris Attack.");
- chaste_font_draw_string(text,200,500);
+ sprintf(text,"All code in this game was written by Chastity White Rose\nusing the C Programming Language and SDL.\n\nAll text is drawn with \"Chaste Font\" which Chastity wrote also.\n\nThis game is based on Panel de Pon, also known as Tetris Attack.");
+chaste_font_draw_string_scaled(text,32,500,2);
 
  SDL_RenderPresent(renderer);
 
@@ -93,8 +93,12 @@ void welcome_screen_chaste_font()
   sprintf(text,"Score %d",score);
   chaste_font_draw_string_scaled(text,text_x,main_font.char_height*6*scale,scale);
   
-   sprintf(text,"Combo %d",combo);
+  sprintf(text,"Combo %d",combo);
   chaste_font_draw_string_scaled(text,text_x,main_font.char_height*7*scale,scale);
+
+  sprintf(text,"Moves %d",moves);
+  chaste_font_draw_string_scaled(text,text_x,main_font.char_height*8*scale,scale);
+
 
   time(&time1);
   
@@ -194,6 +198,35 @@ SDL_SetRenderDrawColor(renderer,128,128,128,255);
  
  stats_func();
 
+
+
+/* this section draws what the player has selected*/
+ 
+ SDL_SetRenderDrawColor(renderer,255,255,255,255);
+
+/*first draw of player selection*/
+ rect.x=grid_offset_x+player.x*block_size;
+ rect.y=player.y*block_size;
+ rect.w=block_size;
+ rect.h=block_size;
+
+ SDL_RenderDrawRect(renderer,&rect);
+ rect.x+=block_size;
+ SDL_RenderDrawRect(renderer,&rect);
+
+/*second drawing with smaller squares for visibility*/
+ x=8;
+ rect.x=grid_offset_x+player.x*block_size+x;
+ rect.y=player.y*block_size+x;
+ rect.w=block_size-x*2;
+ rect.h=block_size-x*2;
+
+ SDL_SetRenderDrawColor(renderer,0,0,0,255);
+ SDL_RenderDrawRect(renderer,&rect);
+ rect.x+=block_size;
+ SDL_RenderDrawRect(renderer,&rect);
+
+
  SDL_RenderPresent(renderer);
 }
 
@@ -202,12 +235,7 @@ this is a function which is called by main after window is created. It is the ga
 */
 void sdl_chaste_panel()
 {
-
- int x=0,y=0,i;
- 
-
-
-
+ int x=0,y=0;
 
  block_size=height/grid_height;
  grid_offset_x=block_size*1; /*how far from the left size of the window the grid display is*/
@@ -268,50 +296,18 @@ void sdl_chaste_panel()
   SDL_RenderClear(renderer);
 
 
-  show_grid();
-
-
-
-
-
+  show_grid(); /*calls SDL_RenderPresent in this function*/
+ 
+ /*optionally, get input from another file instead of keyboard if I have this enabled.*/
+  next_file_input();
 
  /*test for events and only process if they exist*/
  while(SDL_PollEvent(&e))
  {
   keyboard();
  }
- 
- SDL_SetRenderDrawColor(renderer,255,255,255,255);
 
-/*first draw of player selection*/
- rect.x=grid_offset_x+player.x*block_size;
- rect.y=player.y*block_size;
- rect.w=block_size;
- rect.h=block_size;
 
-/*second drawing with smaller squares for visibility*/
- i=4;
- SDL_RenderDrawRect(renderer,&rect);
- rect.x+=block_size;
- SDL_RenderDrawRect(renderer,&rect);
-
- rect.x=grid_offset_x+player.x*block_size;
- rect.y=player.y*block_size;
- rect.w=block_size;
- rect.h=block_size;
- 
- rect.x+=i;
- rect.y+=i;
- rect.w-=i*2;
- rect.h-=i*2;
-
- SDL_SetRenderDrawColor(renderer,0,0,0,255);
- SDL_RenderDrawRect(renderer,&rect);
- rect.x+=block_size;
- SDL_RenderDrawRect(renderer,&rect);
- 
-
- SDL_RenderPresent(renderer);
 
  while(sdl_time<sdl_time1)
  {

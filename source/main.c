@@ -57,16 +57,16 @@ Mix_Chunk *music[3]; /*chunks the music is loaded into*/
 
 int main(int argc, char **argv)
 {
- int i=0;
+ int x;
 
  chaste_audio_init(); /*get the audio device ready*/
  
  /*load all songs*/
- i=0;
- while(i>songs)
+ x=0;
+ while(x<songs)
  {
-  music[i]=chaste_audio_load(music_files[i]);
-  i++;
+  music[x]=chaste_audio_load(music_files[x]);
+  x++;
  }
 
  if(SDL_Init(SDL_INIT_VIDEO)){printf( "SDL could not initialize! SDL_Error: %s\n",SDL_GetError());return -1;}
@@ -79,6 +79,19 @@ int main(int argc, char **argv)
   /*create a renderer that can draw to the surface*/
  renderer = SDL_CreateRenderer(window,-1,0);
  if(renderer==NULL){printf("Renderer could not be created! SDL_Error: %s\n", SDL_GetError() );return -1;}
+
+ sprintf(filename,"imovelog.txt");
+ fp_input=fopen(filename,"rb+");
+ if(fp_input==NULL)
+ {
+  printf("Failed to open input file \"%s\".\n",filename);
+  printf("This is not an error. It just means input is keyboard only. \"%s\".\n",filename);
+ }
+ else
+ {
+  printf("input file \"%s\" is opened.\n",filename);
+  printf("Will read commands from this file before keyboard. \"%s\".\n",filename);
+ }
 
  font_8=chaste_font_load("./font/FreeBASIC Font 8.bmp");
  main_font=font_8;
@@ -93,6 +106,26 @@ int main(int argc, char **argv)
  chaste_audio_play(music[song_index]);
 
  sdl_chaste_panel();
+
+  /*
+  After the game ends, we will attempt to save the movelog to a file.
+  Keeping the movelog in memory and only writing at the end speeds up the program and simplifies things.
+ */
+ 
+  /*open the file to record moves*/
+ sprintf(filename,"omovelog.txt");
+ fp=fopen(filename,"wb+");
+ if(fp==NULL){printf("Failed to create file \"%s\".\n",filename);}
+ else
+ {
+  x=0;
+  while(x<moves)
+  {
+   /*printf("%d %c\n",x,move_log[x]);*/
+   fputc(move_log[x],fp);
+   x++;
+  }
+ }
   
  if(fp!=NULL){fclose(fp);}
  if(fp_input!=NULL){fclose(fp_input);}
@@ -101,15 +134,15 @@ int main(int argc, char **argv)
  SDL_DestroyWindow(window);
  
   /*unload and free the music*/
- i=0;
- while(i<songs)
+ x=0;
+ while(x<songs)
  {
-  if(music[i]!=NULL)
+  if(music[x]!=NULL)
   {
-   Mix_FreeChunk(music[i]);
-   music[i]=NULL;
+   Mix_FreeChunk(music[x]);
+   music[x]=NULL;
   }
-  i++;
+  x++;
  }
  
   if (audio_open)
