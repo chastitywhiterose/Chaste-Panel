@@ -365,14 +365,46 @@ panel_fall_count=0;
  return panel_fall_count;
 }
 
-
-void custom_delay()
+/*
+ this function makes the puyo fall only one grid space and delay each time
+ it makes it look like they are actually falling and is the superior version of the original function
+*/
+void panel_fall_one()
 {
- int t0,t1,d;
+ int x,y;
+ panel_fall_count=0;
 
- d=1000;
+ x=0;
+ while(x<grid_width)
+ {
+  y=grid_height-1;
+  while(y>0 && main_grid.array[x+y*grid_width]!=empty_color)
+  {
+   y--;
+  }
+  while(y>0)
+  {
+   if(main_grid.array[x+(y-1)*grid_width]!=empty_color){panel_fall_count++;}
+   main_grid.array[x+y*grid_width]=main_grid.array[x+(y-1)*grid_width];
+   y--;
+  }
+  x+=1;
+ }
+}
+
+
+
+/*
+a very small but important function I wrote to delay a specified number of milliseconds
+this has vast implications for Chaste Puyo and Chaste Panel. Those games are timing based unlike Chaste Tris.
+*/
+
+void chaste_delay(int delay)
+{
+ int t0,t1;
+
  t0=SDL_GetTicks();
- t1=t0+d;
+ t1=t0+delay;
 
  while(t0<t1)
  {
@@ -394,12 +426,20 @@ void flip()
  /*if either of the spaces swapped is empty, test for potential fall*/
  if( main_grid.array[x+y*grid_width]==0  ||  main_grid.array[x+1+y*grid_width]==0 )
  {
-  show_grid();
-  x=panel_fall();
-  if(x!=0)
-  {
-   custom_delay();
-  }
+   show_grid();
+   chaste_delay(500);
+   panel_fall_count=1;
+   while(panel_fall_count!=0)
+   {
+    panel_fall_one();
+   /*printf("fall==%d\n",x);*/
+    show_grid();
+    if(panel_fall_count!=0)
+    {
+     chaste_delay(100);
+    }
+   }
+
  }
 
 
@@ -418,15 +458,20 @@ void flip()
    combo++;
    score+=100*matches*combo;
    show_grid();
-   custom_delay(); 
+   chaste_delay(500);
 
-   x=panel_fall();
-   /*printf("fall==%d\n",x);*/
-   if(x!=0)
+   panel_fall_count=1;
+   while(panel_fall_count!=0)
    {
+    panel_fall_one();
+   /*printf("fall==%d\n",x);*/
     show_grid();
-    custom_delay();
+    if(panel_fall_count!=0)
+    {
+     chaste_delay(100);
+    }
    }
+
   }
   
  }
@@ -465,4 +510,5 @@ void more()
  move_log[moves]=move_id;
  moves++;
 }
+
 

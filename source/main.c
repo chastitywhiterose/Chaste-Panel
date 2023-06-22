@@ -9,6 +9,7 @@ most variables in the program are global. Unless I create temporary variables in
 */
 int width=1280,height=720;
 int loop=1;
+int Window_Flags=0;
 SDL_Window *window = NULL;
 /*SDL_Surface *surface;*/
 SDL_Renderer *renderer; /*renderer used for some things*/
@@ -69,8 +70,11 @@ int main(int argc, char **argv)
   x++;
  }
 
+/*high definition*/
+ if(1){width=1920;height=1080; Window_Flags=SDL_WINDOW_FULLSCREEN_DESKTOP;}
+
  if(SDL_Init(SDL_INIT_VIDEO)){printf( "SDL could not initialize! SDL_Error: %s\n",SDL_GetError());return -1;}
- window=SDL_CreateWindow( "SDL Chaste Panel",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,width,height,SDL_WINDOW_SHOWN );
+ window=SDL_CreateWindow( "SDL Chaste Panel",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,width,height,Window_Flags);
  if(window==NULL){printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );return -1;}
 
  /*set up the screen*/

@@ -9,6 +9,9 @@ this header file is meant to contain all the functions which write things to the
 /* this function is now the official welcome screen*/
 void welcome_screen_chaste_font()
 {
+ int scale=8;
+ main_font=font_8;
+ text_x=width/100;
 
  delay=1000/fps;
 
@@ -21,46 +24,69 @@ void welcome_screen_chaste_font()
  SDL_SetRenderDrawColor(renderer,0,0,0,255);
  SDL_RenderClear(renderer);
 
- text_x=main_font.char_height*1;
+ scale=width/100;
+ 
 
- sprintf(text,"Chaste \n Panel");
- chaste_font_draw_string_scaled(text,100,main_font.char_height*1*4,20);
+ chaste_font_draw_string_scaled("Chaste Panel",text_x,height/32,scale);
 
- chaste_palette_index=chaste_palette_index1;
- chaste_font_draw_string_scaled_special(text,100,main_font.char_height*1*4,20);
-
- chaste_palette_index1++;
- if(chaste_palette_index1>=chaste_palette_length)
- {
-  chaste_palette_index1=0;
- }
-
-
- sprintf(text,"Press Enter to Begin game.");
- chaste_font_draw_string_scaled(text,200,400,4);
-
- sprintf(text,"All code in this game was written by Chastity White Rose\nusing the C Programming Language and SDL.\n\nAll text is drawn with \"Chaste Font\" which Chastity wrote also.\n\nThis game is based on Panel de Pon, also known as Tetris Attack.");
-chaste_font_draw_string_scaled(text,32,500,2);
-
- SDL_RenderPresent(renderer);
-
-
-  SDL_PollEvent( &e );
-  if( e.type == SDL_QUIT ){loop=0;}
-  if(e.type == SDL_KEYUP)
+  chaste_palette_index=chaste_palette_index1;
+  chaste_font_draw_string_scaled_special("Chaste Panel",text_x,height/32,scale);
+  
+  chaste_palette_index1++;
+  if(chaste_palette_index1>=chaste_palette_length)
   {
-   if(e.key.keysym.sym==SDLK_RETURN){loop=0;}
+   chaste_palette_index1=0;
   }
 
- /*delay*/
+ scale=width/300;
+
+ sprintf(text,"Programming: Chastity White Rose");
+ chaste_font_draw_string_scaled(text,text_x,main_font.char_height*5*scale,scale);
+
+ sprintf(text,"Inspiration: Panel de Pon");
+ chaste_font_draw_string_scaled(text,text_x,main_font.char_height*6*scale,scale);
+
+
+ sprintf(text,"Email: chastitywhiterose@gmail.com");
+ chaste_font_draw_string_scaled(text,text_x,main_font.char_height*8*scale,scale);
+
+ sprintf(text,"Press Enter to Begin game.");
+ chaste_font_draw_string_scaled(text,text_x,height*10/16,scale);
+
+ scale=width/400;
+
+ sprintf(text,"https://www.patreon.com/ChastityWhiteRoseProgramming");
+ 
+ chaste_font_draw_string_scaled(text,text_x,height*7/16,scale);
+
+ scale=width/500;
+
+ sprintf(text,"All physics code in this game was written by Chastity White Rose using the\nC Programming Language. The font handling is done with the font library\nChastity wrote and named Chaste Font.\n\nSDL is used for the graphics API including rectangles and textures.\n\nThis game is based on Panel de Pon, also known as Tetris Attack.");
+ 
+ chaste_font_draw_string_scaled(text,text_x,height*12/16,scale);
+ 
+ SDL_RenderPresent(renderer);
+
+ /*time loop used to slow the game down so users can see it*/
  while(sdl_time<sdl_time1)
  {
   sdl_time=SDL_GetTicks();
  }
 
-
-
+  /*test for events and only process if they exist*/
+  while(SDL_PollEvent(&e))
+  {
+   if(e.type == SDL_QUIT){loop=0;}
+   if(e.type == SDL_KEYUP)
+   {
+    if(e.key.keysym.sym==SDLK_RETURN){loop=0;}
+   }
+  }
+  
  }
+
+
+
 
 }
 
@@ -75,14 +101,15 @@ chaste_font_draw_string_scaled(text,32,500,2);
  {
   int scale=4;
  
-  text_x=32;
+  text_x=16;
+  scale=width/130;
 
 
  /*sprintf(text,"Chaste\n Panel");
  chaste_font_draw_string_scaled(text,text_x,main_font.char_height*1,8);*/
 
   chaste_palette_index=chaste_palette_index1;
-  chaste_font_draw_string_scaled_special("Chaste\n Panel",text_x,main_font.char_height*1,8);
+  chaste_font_draw_string_scaled_special("Chaste\n Panel",text_x,32,scale);
 
   chaste_palette_index1++;
   if(chaste_palette_index1>=chaste_palette_length)
@@ -90,14 +117,16 @@ chaste_font_draw_string_scaled(text,32,500,2);
    chaste_palette_index1=0;
   }
 
+  scale=width/360;
+
   sprintf(text,"Score %d",score);
-  chaste_font_draw_string_scaled(text,text_x,main_font.char_height*6*scale,scale);
+  chaste_font_draw_string_scaled(text,text_x,main_font.char_height*8*scale,scale);
   
   sprintf(text,"Combo %d",combo);
-  chaste_font_draw_string_scaled(text,text_x,main_font.char_height*7*scale,scale);
+  chaste_font_draw_string_scaled(text,text_x,main_font.char_height*9*scale,scale);
 
   sprintf(text,"Moves %d",moves);
-  chaste_font_draw_string_scaled(text,text_x,main_font.char_height*8*scale,scale);
+  chaste_font_draw_string_scaled(text,text_x,main_font.char_height*10*scale,scale);
 
 
   time(&time1);
