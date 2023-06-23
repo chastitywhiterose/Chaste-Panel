@@ -161,6 +161,49 @@ void welcome_screen_chaste_font()
  
  /*a function pointer that points to whichever function I currently use to draw the game stats to the screen*/
 void (*stats_func)()=draw_stats_chaste_font_centered;
+
+/*
+a function which draws the text of the input
+this is meant for showing players how the game is played just by looking at the video
+I thought it would be helpful for my Twitch stream viewers
+*/
+void draw_input()
+{
+ int scale=8;
+ main_font=font_8;
+
+ text_x=width*21/32;
+ scale=width/400;
+
+ switch(move_id)
+ {
+  case 'W':
+   strcpy(text,"W/Up");
+  break;
+  case 'A':
+   strcpy(text,"A/Left");
+  break;
+  case 'S':
+   strcpy(text,"S/Down");
+  break;
+  case 'D':
+   strcpy(text,"D/Right");
+  break;
+
+  case 'Z':
+   strcpy(text,"Z/Flip Panels");
+  break;
+  case 'X':
+   strcpy(text,"X/More Panels");
+  break;
+
+  default:
+   strcpy(text,"");
+ }
+
+ chaste_font_draw_string_scaled(text,text_x,height*1/16,scale);
+
+}
  
  
 /*more global variables to be defined before game loop function*/
@@ -226,7 +269,7 @@ SDL_SetRenderDrawColor(renderer,128,128,128,255);
  /*end of drawing code for walls*/
  
  stats_func();
-
+ draw_input();
 
 
 /* this section draws what the player has selected*/

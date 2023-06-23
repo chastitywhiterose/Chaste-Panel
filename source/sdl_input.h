@@ -8,7 +8,6 @@ void keyboard()
   if (e.type == SDL_KEYDOWN && e.key.repeat==0)
   {
 
-
    key=e.key.keysym.sym;
 
    switch(key)
