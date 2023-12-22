@@ -1,4 +1,4 @@
-/*chastity tetris*/
+/*chastity panel de pon*/
 
 /*Part 1: Declaring variables and constants.*/
 

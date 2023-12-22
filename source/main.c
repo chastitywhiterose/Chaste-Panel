@@ -52,6 +52,7 @@ Mix_Chunk *music[3]; /*chunks the music is loaded into*/
 #include "sdl_chaste_music.h"
 #include "chaste_the_rainbow.h"
 #include "chaste_panel.h"
+#include "chaste_panel_gamesave.h"
 #include "sdl_chastefont_texture.h"
 #include "sdl_input.h"
 #include "sdl_graphics.h"
@@ -66,12 +67,12 @@ int main(int argc, char **argv)
  x=0;
  while(x<songs)
  {
-  music[x]=chaste_audio_load(music_files[x]);
+  /*music[x]=chaste_audio_load(music_files[x]);*/
   x++;
  }
 
 /*high definition*/
- if(1){width=1920;height=1080; Window_Flags=SDL_WINDOW_FULLSCREEN_DESKTOP;}
+ if(0){width=1920;height=1080; Window_Flags=SDL_WINDOW_FULLSCREEN_DESKTOP;}
 
  if(SDL_Init(SDL_INIT_VIDEO)){printf( "SDL could not initialize! SDL_Error: %s\n",SDL_GetError());return -1;}
  window=SDL_CreateWindow( "SDL Chaste Panel",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,width,height,Window_Flags);
