@@ -197,6 +197,51 @@ void draw_input()
    strcpy(text,"X/More Panels");
   break;
 
+  case 'I':
+   strcpy(text,"I/Game Save");
+  break;
+  case 'P':
+   if(state[save_index].exist)
+   {
+    strcpy(text,"P/Game Load");
+   }
+   else
+   {
+    strcpy(text,"P pressed\nbut there\nis no game state\nto load.");
+   }
+  break;
+
+  case '0':
+   strcpy(text,"State 0\nselected.");
+  break;
+  case '1':
+   strcpy(text,"State 1\nselected.");
+  break;
+  case '2':
+   strcpy(text,"State 2\nselected.");
+  break;
+  case '3':
+   strcpy(text,"State 3\nselected.");
+  break;
+  case '4':
+   strcpy(text,"State 4\nselected.");
+  break;
+  case '5':
+   strcpy(text,"State 5\nselected.");
+  break;
+  case '6':
+   strcpy(text,"State 6\nselected.");
+  break;
+  case '7':
+   strcpy(text,"State 7\nselected.");
+  break;
+  case '8':
+   strcpy(text,"State 8\nselected.");
+  break;
+  case '9':
+   strcpy(text,"State 9\nselected.");
+  break;
+
   default:
    strcpy(text,"");
  }
