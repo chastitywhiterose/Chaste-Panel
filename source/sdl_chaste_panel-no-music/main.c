@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <SDL.h>
-#include <SDL_mixer.h>
 
 /*
 most variables in the program are global. Unless I create temporary variables in other functions.
@@ -47,9 +46,6 @@ char *music_files[]=
  "music/Legend_of_Zelda_A_Link_to_the_Past_The_Darkness_and_the_Light_OC_ReMix.mp3"
 };
 
-Mix_Chunk *music[3]; /*chunks the music is loaded into*/
-
-#include "sdl_chaste_music.h"
 #include "chaste_the_rainbow.h"
 #include "chaste_panel.h"
 #include "chaste_panel_gamesave.h"
@@ -60,16 +56,6 @@ Mix_Chunk *music[3]; /*chunks the music is loaded into*/
 int main(int argc, char **argv)
 {
  int x;
-
- chaste_audio_init(); /*get the audio device ready*/
- 
- /*load all songs*/
- x=0;
- while(x<songs)
- {
-  /*music[x]=chaste_audio_load(music_files[x]);*/
-  x++;
- }
 
 /*high definition*/
  if(0){width=1920;height=1080; Window_Flags=SDL_WINDOW_FULLSCREEN_DESKTOP;}
@@ -107,9 +93,6 @@ int main(int argc, char **argv)
 
  welcome_screen_chaste_font();
  
- song_index=0;
- chaste_audio_play(music[song_index]);
-
  sdl_chaste_panel();
 
   /*
@@ -137,25 +120,6 @@ int main(int argc, char **argv)
 
  SDL_DestroyRenderer(renderer);
  SDL_DestroyWindow(window);
- 
-  /*unload and free the music*/
- x=0;
- while(x<songs)
- {
-  if(music[x]!=NULL)
-  {
-   Mix_FreeChunk(music[x]);
-   music[x]=NULL;
-  }
-  x++;
- }
- 
-  if (audio_open)
-  {
-   Mix_CloseAudio();
-   audio_open = 0;
-  }
-  /*end of music closing section*/
  
  SDL_Quit();
 
